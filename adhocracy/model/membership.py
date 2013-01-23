@@ -24,7 +24,7 @@ membership_table = Table(
     )
 
 
-class Membership(object):
+class Membership(meta.Indexable):
 
     def __init__(self, user, instance, group, approved=True):
         self.user = user
@@ -75,3 +75,33 @@ class Membership(object):
                                                self.user.user_name,
                                                key,
                                                self.group.code)
+
+    def to_index(self):
+        from adhocracy.lib.event import stats as estats
+        index = super(Membership, self).to_index()
+
+        if self.instance is None:
+            index['skip'] = True
+
+        else:
+            index.update(dict(
+                title=self.user.name,
+                ))
+        return index
+
+    @classmethod
+    def find(cls, m_id, instance_filter=True, include_deleted=False):
+        try:
+            q = meta.Session.query(Membership)\
+                    .filter(Membership.id == int(m_id))
+
+            if not include_deleted:
+                q = q.filter(or_(Membership.expire_time == None,
+                                 Membership.expire_time > datetime.utcnow()))
+            if ifilter.has_instance() and instance_filter:
+                q = q.filter(Membership.instance == ifilter.get_instance())
+
+            return q.one()
+        except Exception, e:
+            log.warn("find(%s): %s" % (m_id, e))
+            return None

@@ -649,11 +649,13 @@ class UserBadgeFacet(SolrFacet):
     show_current_empty = False
 
     @classmethod
-    def add_data_to_index(cls, user, index):
-        if not isinstance(user, model.User):
-            return
-        index[cls.solr_field] = [ref_attr_value(badge) for
-                                 badge in user.badges]
+    def add_data_to_index(cls, entity, index):
+        if isinstance(entity, model.User):
+            index[cls.solr_field] = [ref_attr_value(badge) for
+                                     badge in entity.badges]
+        elif isinstance(entity, model.Membership):
+            index[cls.solr_field] = [ref_attr_value(badge) for
+                                     badge in entity.user.badges]
 
 
 class InstanceBadgeFacet(SolrFacet):
@@ -1204,6 +1206,17 @@ def solr_instance_users_pager(instance):
     extra_filter = {'facet.instances': instance.key}
     pager = SolrPager('users', tiles.user.row,
                       entity_type=model.User,
+                      sorts=get_user_sorts(instance),
+                      extra_filter=extra_filter,
+                      facets=[UserBadgeFacet])
+    return pager
+
+
+def solr_instance_users_membership_pager(instance):
+    #extra_filter = {'facet.instances': instance.key}
+    extra_filter = {'instance': instance.key}
+    pager = SolrPager('memberships', tiles.user.row_membership,
+                      entity_type=model.Membership,
                       sorts=get_user_sorts(instance),
                       extra_filter=extra_filter,
                       facets=[UserBadgeFacet])

@@ -30,6 +30,9 @@ def update_solr_for_all_users():
     user_query = model.User.all_q()
     for user in user_query:
         post_update(user, model.update.UPDATE)
+    membership_query = model.Membership.all_q()
+    for membership in membership_query:
+        post_update(membership, model.update.UPDATE)
 
 
 def update_solr_for_all_instances():

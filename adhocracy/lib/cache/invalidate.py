@@ -24,6 +24,10 @@ def invalidate_user(user):
     clear_tag(user)
 
 
+def invalidate_membership(membership):
+    invalidate_user(membership.user)
+
+
 def invalidate_text(text):
     clear_tag(text)
     invalidate_page(text.page)

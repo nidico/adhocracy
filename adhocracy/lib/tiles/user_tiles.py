@@ -76,6 +76,10 @@ def row(user):
                        user=user, instance=c.instance, cached=True)
 
 
+def row_membership(membership):
+    return row(membership.user)
+
+
 def header(user, tile=None, active='activity'):
     if tile is None:
         tile = UserTile(user)

@@ -25,7 +25,8 @@ from adhocracy.lib.base import BaseController
 from adhocracy.lib.instance import RequireInstance
 import adhocracy.lib.mail as libmail
 from adhocracy.lib.pager import (NamedPager, solr_global_users_pager,
-                                 solr_instance_users_pager, PROPOSAL_SORTS)
+                                 solr_instance_users_membership_pager,
+                                 PROPOSAL_SORTS)
 from adhocracy.lib.queue import post_update
 from adhocracy.lib.templating import render, render_json, ret_abort
 from adhocracy.lib.util import get_entity_or_abort, random_token
@@ -110,7 +111,7 @@ class UserController(BaseController):
     def index(self, format='html'):
         require.user.index()
 
-        c.users_pager = solr_instance_users_pager(c.instance)
+        c.users_pager = solr_instance_users_membership_pager(c.instance)
 
         #if format == 'json':
         ##    return render_json(c.users_pager)

@@ -452,6 +452,7 @@ class User(meta.Indexable):
         return d
 
     def to_index(self):
+        from adhocracy.lib.event import stats as estats
         index = super(User, self).to_index()
 
         index.update(dict(
@@ -459,6 +460,7 @@ class User(meta.Indexable):
             tag=[self.user_name],
             body=self.bio,
             user=self.user_name,
+            activity=estats.user_activity(None, self)
             ))
         return index
 

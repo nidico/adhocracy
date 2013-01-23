@@ -11,7 +11,8 @@ log = logging.getLogger(__name__)
 
 
 INDEXED_CLASSES = (model.Proposal, model.Instance, model.User,
-                   model.Comment, model.Page, model.Milestone)
+                   model.Comment, model.Page, model.Milestone,
+                   model.Membership)
 
 
 def init_search():

@@ -35,6 +35,7 @@ from text import Text
 from user import User
 from vote import Vote
 from milestone import Milestone
+from membership import Membership
 
 
 log = logging.getLogger(__name__)
@@ -57,7 +58,8 @@ TYPES = [Vote,
          Selection,
          Text,
          Milestone,
-         Tagging]
+         Tagging,
+         Membership]
 
 
 def entity_type(entity):
