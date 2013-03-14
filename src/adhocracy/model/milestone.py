@@ -79,6 +79,10 @@ class Milestone(object):
     def all_future(cls, instance=None, include_deleted=False):
         return cls.all_future_q(instance, include_deleted).all()
 
+    @classmethod
+    def get_next(cls, instance=None):
+        return cls.all_future_q(instance).order_by(cls.time).first()
+
     @property
     def over(self, expire_time=None):
         if expire_time is None:

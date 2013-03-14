@@ -6,6 +6,7 @@ import re
 from babel import Locale
 
 from pylons import config
+from paste.deploy.converters import asbool
 
 from sqlalchemy import Table, Column, ForeignKey, func, or_
 from sqlalchemy import DateTime, Integer, Float, Boolean, Unicode, UnicodeText
@@ -277,3 +278,14 @@ class Instance(meta.Indexable):
 
     def __repr__(self):
         return u"<Instance(%d,%s)>" % (self.id, self.key)
+
+    def default_proposal_url(self):
+        from adhocracy.lib import helpers as h
+        if asbool(config.get(
+           'adhocracy.proposal.default_filter.next_milestone', 'false')):
+            from adhocracy.model import Milestone
+            next_milestone = Milestone.get_next(self)
+            if next_milestone is not None:
+                url = '/proposal?proposals_facet=delegateablemilestone%%3A%d'
+                return h.base_url(url % next_milestone.id)
+        return h.base_url('/proposal')
