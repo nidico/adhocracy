@@ -127,6 +127,20 @@ class UniqueInstanceKey(formencode.FancyValidator):
         return value
 
 
+class StaticPageKey(formencode.FancyValidator):
+    def to_python(self, value, state):
+        from adhocracy.lib import staticpage
+        if not value:
+            raise formencode.Invalid(
+                _('No static key is given'),
+                value, state)
+        if not staticpage.STATICPAGE_KEY.match(value) or value in ['new']:
+            raise formencode.Invalid(
+                _('The static key is invalid'),
+                value, state)
+        return value
+
+
 class ValidDelegateable(formencode.FancyValidator):
     def _to_python(self, value, state):
         from adhocracy.model import Delegateable
@@ -206,6 +220,33 @@ class ValidUserBadge(formencode.FancyValidator):
                 value, state)
         return badge
 
+class ValidUserBadges(formencode.FancyValidator):
+    """ Check for a set of user badges, inputted by ID """
+
+    accept_iterator = True
+    if_missing = []
+
+    def _to_python(self, value, state):
+        from adhocracy.model import UserBadge
+
+        if value is None:
+            return []
+
+        if isinstance(value, (str, unicode)):
+            value = [value]
+
+        if len(value) != len(set(value)):
+            raise formencode.Invalid(
+                _("Duplicates in input set of user badge IDs") % value,
+                value, state)
+
+        badges = UserBadge.findall_by_ids(value)
+        if len(badges) != len(value):
+            missing = set(value).difference(b.id for b in badges)
+            raise formencode.Invalid(
+                _("Could not find badges %s") % ','.join(map(str, missing)),
+                value, state)
+        return badges
 
 class ValidInstanceBadge(formencode.FancyValidator):
 
@@ -261,6 +302,44 @@ class ValidCategoryBadge(formencode.FancyValidator):
                 _("Badge with ID '%s' not valid in this instance") % value,
                 value, state)
         return badge
+
+
+class ValidParentCategory(formencode.validators.FormValidator):
+
+    def validate_python(self, field_dict, state):
+        if (field_dict['parent'] is not None and
+           field_dict['parent'].instance is not field_dict['instance']):
+            msg = _("Parent and child category instance have to match")
+            raise formencode.Invalid(
+                msg, field_dict, state,
+                error_dict={'parent': msg}
+            )
+        else:
+            return field_dict
+
+
+class ValidateNoCycle(formencode.validators.FormValidator):
+
+    def validate_python(self, field_dict, state):
+
+        def parent_okay(category):
+            if category is None:
+                # no cycle
+                return True
+            elif category == field_dict['id']:
+                # cycle
+                return False
+            else:
+                return parent_okay(category.parent)
+
+        if parent_okay(field_dict['parent']):
+            return field_dict
+        else:
+            msg = _('You shall not create cycles!')
+            raise formencode.Invalid(
+                msg, field_dict, state,
+                error_dict={'parent': msg}
+            )
 
 
 class MaybeMilestone(formencode.FancyValidator):
@@ -505,14 +584,16 @@ class UsersCSV(formencode.FancyValidator):
     def _check_item(self, item, line):
         error_list = []
         user_name = item.get(USER_NAME, '').strip()
-        email = item.get(EMAIL, '').strip()
+        email = item.get(EMAIL, '')
+        if email is not None:
+            email = email.strip()
         for (validator, value) in ((USERNAME_VALIDATOR, user_name),
                                    (EMAIL_VALIDATOR, email)):
             try:
                 validator.to_python(value, None)
             except formencode.Invalid, E:
                 error_list.append(u'%s (%s)' % (E.msg, value))
-        emails = self.emails.setdefault(email.strip(), [])
+        emails = self.emails.setdefault(email, [])
         emails.append(line)
         usernames = self.usernames.setdefault(user_name.strip(), [])
         usernames.append(line)

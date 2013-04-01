@@ -1578,12 +1578,45 @@ body.logged_in .only-anon {
 }
 
 #add_tags {
-padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .facet ul {
-list-style: none;
-margin-left: 0;
+  list-style: none;
+  margin-left: 0;
+  margin-bottom: 5px;
+}
+.facet ul ul {
+  margin-left: 18px;
+}
+.facet ul ul.noindent {
+  margin-left: 0px;
+}
+.facet li a.expand_arrow {
+  width: 11px;
+  height: 11px;
+  display: inline-block;
+  background: url("/images/arrow-right-11.png") no-repeat 0px top;
+}
+.facet li > a.expand_arrow:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+.facet li.expanded > a.expand_arrow {
+  background: url("/images/arrow-down-11.png") no-repeat 0px top;
+}
+.facet li > ul {
+  display: none;
+}
+.facet li.expanded > ul {
+  display: block;
+}
+.facet input {
+  margin-top: 2px;
+  margin-right: 5px;
+}
+.facet .facet_item_text {
+  font-weight: bold;
 }
 
 .content_box .more {
@@ -1741,3 +1774,56 @@ a.joyride-prev-tip:hover {
 iframe {
   border: none;
 }
+
+form#user_welcome {
+  margin: 0;
+  padding: 0;
+}
+form#user_welcome>label {
+  margin: 0;
+  padding: 5px 0;
+  text-align: center;
+  font-size: 22px;
+  line-height: normal;
+}
+form#user_welcome>label>* {
+  vertical-align: top;
+  font-size: inherit;
+  height: auto;
+  line-height: normal;
+}
+form#user_welcome>label>span {
+  display: inline-block;
+  padding-top: 3px;
+}
+form#user_welcome>label>input[type="password"] {
+  padding: 2px 5px;
+  margin: 0;
+  width: 5em;
+}
+form#user_welcome>label>input[type="submit"] {
+  padding: 2px 5px;
+}
+
+dl.votedetail {margin: 0; padding: 0;}
+dl.votedetail>dt {float: left; min-width: 5em; padding-right: 0.5em;}
+dl.votedetail>dd {margin: 0; padding: 0;}
+
+.languagelist label {margin: 0; padding: 0;}
+
+.massmessage_filter>div {float: left;}
+.massmessage_filter>div:not(:first-of-type) {
+  padding-left: 1em;
+  margin-left: 1em;
+  border-left: 1px solid #ddd;
+}
+.massmessage_preview {background: inherit;}
+.massmessage_preview dl {margin: 0;}
+.massmessage_preview dt {float: left; min-width: 5em;}
+.massmessage_preview dt, .massmessage_preview dd {margin: 0;}
+/* Override bootstrap mis-definitions */
+.massmessage_preview dt, .massmessage_preview dd {line-height: inherit;}
+
+.message_preview_body {background: #ccc; white-space: pre-wrap; margin-bottom: 0.5em;}
+
+.importexport_settings {margin-left: 30px;}
