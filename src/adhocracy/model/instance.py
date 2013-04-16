@@ -50,6 +50,9 @@ instance_table = Table(
     Column('hide_global_categories', Boolean, nullable=True, default=False),
     Column('editable_comments_default', Boolean, nullable=True, default=True),
     Column('require_valid_email', Boolean, nullable=True, default=True),
+    Column('allow_thumbnailbadges', Boolean, default=False),
+    Column('thumbnailbadges_height', Integer, nullable=True),
+    Column('thumbnailbadges_width', Integer, nullable=True),
 )
 
 
@@ -109,7 +112,7 @@ class Instance(meta.Indexable):
         global_membership = Permission.find('global.member')
         for group in global_membership.groups:
             for membership in group.memberships:
-                if membership.instance == None and not membership.expire_time:
+                if membership.instance is None and not membership.expire_time:
                     members.append(membership.user)
         return list(set(members))
 
@@ -133,7 +136,7 @@ class Instance(meta.Indexable):
         from proposal import Proposal
         q = meta.Session.query(Proposal)
         q = q.filter(Proposal.instance == self)
-        q = q.filter(or_(Proposal.delete_time == None,
+        q = q.filter(or_(Proposal.delete_time == None,  # noqa
                          Proposal.delete_time >= datetime.utcnow()))
         return q.count()
 
@@ -143,7 +146,7 @@ class Instance(meta.Indexable):
         from membership import Membership
         q = meta.Session.query(Membership)
         q = q.filter(Membership.instance == self)
-        q = q.filter(or_(Membership.expire_time == None,
+        q = q.filter(or_(Membership.expire_time == None,  # noqa
                          Membership.expire_time >= datetime.utcnow()))
         return q.count()
 
@@ -160,7 +163,7 @@ class Instance(meta.Indexable):
             except ValueError:
                 q = q.filter(Instance.key == unicode(key))
             if not include_deleted:
-                q = q.filter(or_(Instance.delete_time == None,
+                q = q.filter(or_(Instance.delete_time == None,  # noqa
                                  Instance.delete_time > datetime.utcnow()))
             return q.limit(1).first()
         except Exception, e:
@@ -199,10 +202,10 @@ class Instance(meta.Indexable):
         q = cls.all_q()
         q = meta.Session.query(Instance)
         if not include_deleted:
-            q = q.filter(or_(Instance.delete_time == None,
+            q = q.filter(or_(Instance.delete_time == None,  # noqa
                              Instance.delete_time > datetime.utcnow()))
         if not include_hidden:
-            q = q.filter(or_(Instance.hidden == None,
+            q = q.filter(or_(Instance.hidden == None,  # noqa
                              Instance.hidden == False))
         if limit is not None:
             q = q.limit(limit)
@@ -253,6 +256,9 @@ class Instance(meta.Indexable):
                  allow_propose=self.allow_propose,
                  allow_index=self.allow_index,
                  hidden=self.hidden,
+                 allow_thumbnailbadges=self.allow_thumbnailbadges,
+                 thumbnailbadges_height=self.thumbnailbadges_height,
+                 thumbnailbadges_width=self.thumbnailbadges_width,
                  url=h.entity_url(self),
                  instance_url=h.instance.url(self),
                  default_group=self.default_group.code,
