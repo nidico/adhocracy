@@ -68,6 +68,12 @@ var adhocracy = adhocracy || {};
             wrap.load(href);
             event.preventDefault();
         });
+        wrap.delegate('select.sort_options', 'change', function (event) {
+            event.preventDefault();
+            var url = $(this).find('option:selected').data('url');
+            wrap.load(url);
+            return false;
+        });
     };
 
     adhocracy.overlay.rebindCameFrom = function () {
