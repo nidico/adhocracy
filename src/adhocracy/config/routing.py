@@ -41,7 +41,6 @@ def make_map(config):
                 action='welcome')
     map.resource('user', 'user', member={'votes': 'GET',
                                          'delegations': 'GET',
-                                         'votes': 'GET',
                                          'instances': 'GET',
                                          'watchlist': 'GET',
                                          'groupmod': 'GET',
