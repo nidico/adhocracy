@@ -6,7 +6,7 @@
     %>
     <div class="tile event">
         <div class="meta">
-            <a href="/user/${event.user.user_name}">${event.user.name}</a>
+            <a href="${h.entity_url(event.user)}">${event.user.name}</a>
             ${tiles.badge.badges(event.user.badges)} ${event_html|n}
             %if tile.text:
                 <div class="event_text">
@@ -20,3 +20,92 @@
         </div>
     </div>
 </%def>
+
+<%def name="profile_row(tile, event, dashboard=False)">
+    <%
+    from adhocracy.lib.event import formatting
+    event_html = formatting.as_html(event)
+    %>
+    <li class="${event.event.code}">
+        %if c.dashboard:
+        <img class="avatar" src="/images/example_user.jpg"/>
+        %endif
+        <div class="time">${h.datetime_tag(event.time)|n}</div>
+        <div class="action">
+            <a href="${h.entity_url(event.user)}">${event.user.name}</a>
+            ${event_html|n}:
+        </div>
+
+        %if event.event.code in [u't_proposal_create', u't_proposal_edit']:
+        ${row_text(h.entity_url(event.proposal), _(u'Show proposal'), event.proposal.description.head.render(), event.proposal.title)}
+
+        %elif event.event.code in [u't_comment_create', u't_comment_edit']:
+        ${row_text(h.entity_url(event.comment), _(u'Show comment'), event.comment.latest.text)}
+
+        %elif event.event.code in [u't_comment_create']:
+
+        %endif
+    </li>
+</%def>
+
+<%def name="dashboard_row(tile, event)">
+    ${profile_row(tile, event, dashboard=True)}
+</%def>
+
+<%def name="row_text(url, link_text, text, title=None)">
+    <div class="body">
+        %if title is not None:
+        <h3>${title}</h3>
+        %endif
+        <% short = h.text.truncate_html(text, 30) %>
+        <p>${short|n}</p>
+        <a href="${url}" class="button_small">${link_text}</a>
+    </div>
+</%def>
+
+
+<%doc>
+event types:
+
+ n_self_voted,
+ t_select_variant,
+ t_instance_create,
+ t_instance_edit,
+ t_instance_membership_update,
+ n_instance_membership_update,
+ t_instance_join,
+ t_instance_leave,
+ t_instance_delete,
+ n_instance_force_leave,
+ t_instance_force_leave,
+ t_user_create,
+ t_user_edit,
+ t_user_admin_edit,
+ t_page_create,
+ t_page_edit,
+ t_page_delete,
+ t_test,
+ n_delegate_conflict,
+        
+ t_comment_edit,
+ t_comment_create,
+ t_comment_delete,
+ n_comment_reply,
+ n_comment_edit,
+        
+ t_proposal_create,
+ t_proposal_edit,
+ t_proposal_delete,
+ t_proposal_state_voting,
+ t_proposal_state_draft,
+        
+ t_delegation_create,
+ t_delegation_revoke
+        
+ n_delegation_receive,
+ n_delegation_lost,
+        
+ t_vote_cast,
+ t_rating_cast,
+ n_delegate_voted,
+</%doc>

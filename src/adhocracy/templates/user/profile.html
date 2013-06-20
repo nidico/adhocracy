@@ -1,0 +1,87 @@
+<%inherit file="/template.html" />
+
+<%block name="main_content">
+    <div class="dashboard_select_instance">
+        Aktivität in
+        <select>
+            <option>Hamburg</option>
+        </select>
+    </div>
+
+    <h2>Maximilian Mustermann</h2>
+
+    <ul class="content_nav">
+        <li><a href="#">über mich</a></li>
+        <li class="current"><a href="#">alle Ereignisse</a></li>
+        <li><a href="#">Beiträge</a></li>
+        <li><a href="#">Termine</a></li>
+        <li><a href="#">Abstimmungen</a></li>
+        <li><a href="#">Delegationen</a></li>
+    </ul>
+
+    <ul class="dashboard_pager">
+        <li class="t_proposal_create">
+            <img class="avatar" src="/images/example_user.jpg"/>
+            <div class="time"><time datetime="2013-05-03T12:39:00+01:00">3. Mai 2013 12:39</time></div>
+            <div class="action"><a class="user" href="#">Maximilian Mustermann</a> hat einen Vorschlag erstellt:</div>
+            <div class="body">
+                <h3>Sanierung Görlitzer Park</h3>
+                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+                <a href="#" class="button_small">Alles anzeigen</a>
+            </div>
+        </li>
+        <li class="t_proposal_create">
+            <img class="avatar" src="/images/example_user.jpg"/>
+            <div class="time"><time datetime="2013-05-03T12:39:00+01:00">3. Mai 2013 12:39</time></div>
+            <div class="action"><a class="user" href="#">Maximilian Mustermann</a> hat <span class="con">gegen ×</span> einen Kommentar gestimmt:</div>
+            <div class="body">
+                <h3>Sanierung Görlitzer Park</h3>
+                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+                <a href="#" class="button_small">Alles anzeigen</a>
+            </div>
+        </li>
+        <li class="t_proposal_create">
+            <div class="time"><time datetime="2013-05-03T12:39:00+01:00">3. Mai 2013 12:39</time></div>
+            <div class="action"><a class="user" href="#">Maximilian Mustermann</a> hat <span class="con">gegen ×</span> einen Kommentar gestimmt:</div>
+        </li>
+    </ul>
+
+    <div class="pager">
+        <div class="prev_page">
+            <span>« vorherige</span>
+        </div>
+        <span class="current">1</span>
+        <a href="#">2</a>  
+        <div class="next_page">
+            <a href="#">nächste »</a>
+        </div>
+    </div>
+</%block>
+
+<%block name="sidebar">
+    <div id="photo">
+        <img src="/images/person_placeholder.png" alt="Maximilian Mustermann">
+        <a href="#" class="button">Profilbild Hochladen</a>
+    </div>
+
+    <div id="meta" class="sidebar_box">
+        <h3>Informationen</h3>
+
+        <h4>Mitglied seit</h4>
+        13.05.2012
+
+        <h4>Nutzerrolle</h4>
+        Administrator
+
+        <h4>Zuletzt online</h4>
+        01.09.2013
+
+        <h4>Kontakt</h4>
+        <a href="#">info@mustermann.de</a>
+
+        <h4>Mitglied in weiteren Instanzen</h4>
+        <a href="#">Stuttgard 21</a>,
+        <a href="#">Mediaspree versenken</a>,
+        <a href="#">Hamburg</a>
+    </div>
+</%block>

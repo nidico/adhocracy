@@ -11,8 +11,6 @@
 <%block name="main_content">
 
     <% instances = c.page_user.real_instances(exclude_current=False) %>
-
-    <div class="dashboard_header_row">
     <div class="dashboard_select_instance">
         ${_(u'Activity in')}
         <select class="autoreload">
@@ -25,9 +23,8 @@
         </select>
     </div>
 
-    <h2>${c.page_user.name}</h2>
+<h2>${c.page_user.name}</h2>
     ${tiles.user.header(c.page_user, c.tile, active='activity')}
-    </div>
 
     <ul class="content_nav">
       %for (active, title, url) in c.user_nav:
@@ -36,11 +33,17 @@
       </li>
       %endfor
     </ul>
-    
-    <div class="table">
-        ${c.events_pager.here()}
-    </div>
 
+    %if c.bio:
+        <div class="description">
+            ${c.bio|n}
+        </div>
+    %else:
+        <div class="infobox">
+            ${_("%s does not yet have a bio.") % c.page_user.name}
+        </div>
+    %endif  
+    
 </%block>
 
 <%block name="sidebar">
@@ -48,7 +51,7 @@
         ${components.watch(c.page_user, show_skip=False)}
     %endif
 
-    <div id="meta" class="dashboard sidebar_box">
+    <div id="meta" class="sidebar_box">
 
         <h3>${_('Informations')}</h3>
 
