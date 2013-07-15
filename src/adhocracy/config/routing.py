@@ -54,7 +54,8 @@ def make_map(config):
                                          'set_password': 'POST',
                                          'generate_welcome_link': 'POST'},
                  collection={'complete': 'GET',
-                             'filter': 'GET'})
+                             'filter': 'GET',
+                             })
 
     # TODO work this into a complete subcontroller.
     map.connect('/user/{id}/message.{format}', controller='message',
@@ -90,6 +91,12 @@ def make_map(config):
                 conditions=dict(method=['GET']))
     map.connect('/user/{id}/settings/advanced',
                 controller='user', action='settings_advanced_update',
+                conditions=dict(method=['PUT']))
+    map.connect('/user/{id}/settings/optional',
+                controller='user', action='settings_optional',
+                conditions=dict(method=['GET']))
+    map.connect('/user/{id}/settings/optional',
+                controller='user', action='settings_optional_update',
                 conditions=dict(method=['PUT']))
 
     map.connect('/message/new', controller='massmessage', action='new')
