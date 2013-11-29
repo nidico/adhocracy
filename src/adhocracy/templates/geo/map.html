@@ -2,11 +2,6 @@
 
 <%def name="attribution(long=False, inline=True)">
 <% cls = 'note_map_inline' if inline else 'note_map' %>
-%if long:
-  <div class="${cls}">Map data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors (<a href="http://www.openstreetmap.org/copyright">${_("License")}</a>)</div>
-%else:
-  <div class="${cls}">&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a></div>
-%endif
 </%def>
 
 <%def name="show_single_proposal_map(proposal_id, map_class='small_boxed_map')">

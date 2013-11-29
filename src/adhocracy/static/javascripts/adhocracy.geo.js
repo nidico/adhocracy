@@ -1113,7 +1113,8 @@ var adhocracy = adhocracy || {};
                  numZoomLevels: maxZoom - minZoom + 1,
                  maxResolution: adhocracy.geo.AVAILABLE_RESOLUTIONS[minZoom],
                  tileOptions: {crossOriginKeyword: null},
-                 visibility: l.visible || false
+                 visibility: l.visible || false,
+                 opacity: 0.4
                 }));
         };
 
@@ -1121,6 +1122,14 @@ var adhocracy = adhocracy || {};
         if (blank) {
             baseLayers.push(new OpenLayers.Layer("Blank", {isBaseLayer: true}));
         }
+
+        var aerial = new OpenLayers.Layer.Bing({
+            name: "My Bing Aerial Layer",
+            type: "Aerial",
+            key: "AnS2yqVFGaCpI5K0WZg3WsCOSEEmz9TrAiPQHIEKH1ugMgCHA92PhEKgfSAwAQ4O",
+        });
+
+        baseLayers.push(aerial);
 
         return baseLayers;
     };
@@ -1185,7 +1194,12 @@ var adhocracy = adhocracy || {};
 
         var mapControls = [
             new OpenLayers.Control.Navigation({'handleRightClicks': true}),
-            new OpenLayers.Control.ScaleLine({'geodesic': true})
+            new OpenLayers.Control.ScaleLine({'geodesic': true}),
+            new OpenLayers.Control.MousePosition({
+                prefix: '<a target="_blank" ' + 
+                    'href="http://spatialreference.org/ref/epsg/4326/">' +
+                    'EPSG:4326</a> coordinates: '
+            })
         ];
 
         if (fullControls) {
