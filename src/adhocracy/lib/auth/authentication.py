@@ -21,6 +21,41 @@ from webob import Request
 log = logging.getLogger(__name__)
 
 
+LOGIN_CONFIG = {
+    'local': {
+        'type': 'local',
+        'name': 'Local login',
+        'logo': '/images/logo_adhocracy_code.png',
+    },
+    'shibboleth': {
+        'type': 'shibboleth',
+        'name': 'Shibboleth',
+        'logo': 'FIXME',
+    },
+    'openid': {
+        'type': 'openid',
+        'name': 'OpenID',
+        'logo': '/openid-selector/images.large/openid.gif',
+        'openid_url': None,
+    },
+    'google': {
+        'type': 'openid',
+        'name': 'Google',
+        'logo': '/openid-selector/images.large/google.gif',
+        'openid_url': 'https://www.google.com/accounts/o8/id',
+    },
+    'yahoo': {
+        'type': 'openid',
+        'name': 'Yahoo',
+        'logo': '/openid-selector/images.large/yahoo.gif',
+        'openid_url': 'https://me.yahoo.com',
+    },
+    'facebook': {
+        'type': 'velruse',
+        'name': 'Facebook',
+        'logo': '/velruse/facebook_login.png',
+    },
+}
 
 
 class _EmailBaseSQLAlchemyPlugin(object):

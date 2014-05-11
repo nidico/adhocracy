@@ -21,6 +21,7 @@ from adhocracy import i18n
 from adhocracy.lib import democracy, event, helpers as h, pager, logo
 from adhocracy.lib import sorting, search as libsearch, tiles, text
 from adhocracy.lib.auth import require, can, login_user, guard
+from adhocracy.lib.auth.authentication import LOGIN_CONFIG
 from adhocracy.lib.auth.authorization import has
 from adhocracy.lib.auth.csrf import RequireInternalRequest, token_id
 from adhocracy.lib.auth.welcome import (welcome_enabled, can_welcome,
@@ -1073,15 +1074,22 @@ class UserController(BaseController):
                 defaults['login'] = request.environ['_login_value']
             defaults['_tok'] = token_id()
         data = {}
-        data['hide_locallogin'] = (
-            config.get_bool('adhocracy.hide_locallogin')
-            and 'locallogin' not in request.GET)
         add_static_content(data, u'adhocracy.static_login_path')
+
+        data['login_types'] = config.get_list('adhocracy.login_type')
+        data['login_config'] = LOGIN_CONFIG
+
+        if ('local' in data['login_types']
+                and config.get_bool('adhocracy.hide_locallogin')
+                and 'locallogin' not in request.GET):
+            data['login_types'].remove('local')
+
         form = render('/user/login_tile.html', data,
                       overlay=format == u'overlay')
         form = htmlfill.render(form,
                                errors=errors,
-                               defaults=defaults)
+                               defaults=defaults,
+                               force_defaults=False)
         return render('/user/login.html', {'login_form_code': form},
                       overlay=format == u'overlay')
 

@@ -81,8 +81,8 @@ DEFAULTS = {
     # 'default' or 'alternate'
     'adhocracy.login_style': 'default',
 
-    # possible options: local, openid, facebook
-    'adhocracy.login_type': ['local', 'openid'],
+    # possible options: local, google, yahoo, facebook, openid
+    'adhocracy.login_type': ['local', 'google', 'yahoo', 'openid'],
 
     # possible options: email+password, username+password
     'adhocracy.login_type.local': ['email+password', 'username+password'],

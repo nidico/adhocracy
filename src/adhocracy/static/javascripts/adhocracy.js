@@ -1409,6 +1409,7 @@ $(document).ready(function () {
         .addClass('only-mobile')
         .css('display', 'none')
     );
+    $('.login_tabs').tabs('.login_panes > div');
 
     adhocracy.helpers.relative_time($('time.relative'));
 });

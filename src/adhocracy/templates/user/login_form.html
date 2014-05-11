@@ -1,5 +1,4 @@
 <%namespace name="components" file="/components.html"/>
-<%namespace name="sso" file="/sso.html"/>
 <%
 local_login_types = h.config.get_list('adhocracy.login_type.local')
 if 'username+password' in local_login_types and 'email+password' in local_login_types:
@@ -15,12 +14,6 @@ else:
 %>
 
 <div class="form_wrapper">
-  %if 'shibboleth' in h.config.get_list('adhocracy.login_type'):
-  <div>
-    <a href="${h.get_redirect_url('shibboleth/request_auth')}" class="button ${components.add_patch_camefrom_class()}">${_(u"Login") if c.hide_locallogin else _(u"Login via Shibboleth")}</a>
-  </div>
-  %endif
-
   %if not c.hide_locallogin:
   <form method="POST" action="${h.get_redirect_url(u'perform_login')}" class="${components.add_patch_camefrom_class()} login_form">
     <div class="input_wrapper">
@@ -48,5 +41,4 @@ else:
       $('input[name=login]').focus();
   </script>
 
-  <%sso:form scenario="login" />
 </div>

@@ -1,10 +1,50 @@
+<%namespace name="components" file="/components.html"/>
 <h3>${_("Login") if c.title is None else c.title}</h3>
 %if c.body is not None:
 ${c.body|n}
 %endif
 
-%if h.config.get('adhocracy.login_style') == 'alternate':
-  <%include file="/user/login_form_alternate.html"/>
-%else:
-  <%include file="/user/login_form.html"/>
-%endif
+<% h.need.jquerytools %>
+<ul class="login_tabs">
+    %for login_type in c.login_types:
+    <% typ = c.login_config[login_type] %>
+    <li><a href="#"><img src="${typ['logo']}" alt="${typ['name']}" /></a></li>
+    %endfor
+</ul>
+
+<div class="login_panes">
+    %for login_type in c.login_types:
+    <% typ = c.login_config[login_type] %>
+
+    <div>
+        %if typ['type']=='local':
+
+        %if h.config.get('adhocracy.login_style') == 'alternate':
+        <%include file="/user/login_form_alternate.html"/>
+        %else:
+        <%include file="/user/login_form.html"/>
+        %endif
+
+        %elif typ['type'] in ['openid', 'velruse']:
+        <p class="sso_warning">${_(u'Please note that signing in with %s may cause security and privacy related risks.') % typ['name']} <a href='/static/sso.html'>${_(u'More information...')}</a></p>
+
+        %if typ['type'] == 'openid':
+        <form action="/openid/init">
+            %if typ['openid_url'] is None:
+            <input type="text" name="openid" value="http://" />
+            %else:
+            <input type="hidden" name="openid" value="${typ['openid_url']}" />
+            %endif
+            <input class="button" type="submit" value="${_(u'Login with %s') % typ['name']}" />
+        </form>
+        %elif typ['type'] == 'velruse':
+        <a class="button" href="${h.get_redirect_url('velruse/login_with_velruse')}" class="${components.add_patch_camefrom_class()}">${_(u'Login with %s') % typ['name']}</a>
+        %elif typ['type'] == 'shibboleth':
+        <a class="button" href="${h.get_redirect_url('shibboleth/request_auth')}" class="button ${components.add_patch_camefrom_class()}">${_(u"Login") if c.hide_locallogin else _(u"Login via Shibboleth")}</a>
+        %endif
+
+        %endif
+
+    </div>
+    %endfor
+</div>
