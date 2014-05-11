@@ -9,7 +9,7 @@ from pylons.i18n import _
 from sqlalchemy.exc import IntegrityError
 from requests import get
 
-from adhocracy.lib.auth.authentication import allowed_login_types
+from adhocracy import config
 from adhocracy.lib.base import BaseController
 from adhocracy.lib import event
 from adhocracy.lib.auth import can
@@ -102,7 +102,7 @@ class VelruseController(BaseController):
 
         provider_name = auth_info['provider_name']
 
-        if provider_name not in allowed_login_types():
+        if provider_name not in config.get_list('adhocracy.login_type'):
             self._failure(_("Logging in with %s "
                           "is not allowed on this installation.")
                           % provider_name.capitalize(),

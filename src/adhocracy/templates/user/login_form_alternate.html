@@ -1,6 +1,6 @@
 <%namespace name="components" file="/components.html"/>
 <%
-login_titleandtype = h.allowed_login_types()
+login_titleandtype = h.config.get_list('adhocracy.login_type')
 if 'email+password' in login_titleandtype:
     field_question = _('What is your email address?')
     field_title = _('My email:')

@@ -8,6 +8,7 @@ from repoze.who.plugins.friendlyform import FriendlyFormPlugin
 from repoze.what.middleware import setup_auth as setup_what
 from repoze.what.plugins.sql.adapters import SqlPermissionsAdapter
 
+from adhocracy.config import get_json as config_get_list
 import adhocracy.model as model
 from . import welcome
 from authorization import InstanceGroupSourceAdapter
@@ -20,11 +21,6 @@ from webob import Request
 log = logging.getLogger(__name__)
 
 
-def allowed_login_types(config=config):
-    login = config.get('adhocracy.login_type',
-                       'openid,username+password,email+password')
-    login = login.split(',')
-    return login
 
 
 class _EmailBaseSQLAlchemyPlugin(object):
@@ -35,7 +31,8 @@ class _EmailBaseSQLAlchemyPlugin(object):
     }
 
     def get_user(self, login):
-        login_configuration = allowed_login_types()
+        login_configuration = config_get_list('adhocracy.login_type',
+                                              config=config)
         allow_name = 'username+password' in login_configuration
         allow_email = 'email+password' in login_configuration
 

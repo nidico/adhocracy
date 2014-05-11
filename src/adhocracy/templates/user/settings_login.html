@@ -31,7 +31,8 @@ ${tiles.user.header(c.page_user)}
     %endif
 
 
-    %if 'openid' in h.allowed_login_types() or 'facebook' in h.allowed_login_types():
+    <% login_types = h.config.get_list('adhocracy.login_type') %>
+    %if ('openid' in login_types) or ('facebook' in login_types):
     <fieldset>
       <legend>${_("Single sign-on services")}</legend>
       <p class="info">${_("Single sign-on services allow you to use a single login on many web sites.")}</p>
@@ -49,7 +50,7 @@ ${tiles.user.header(c.page_user)}
               </tr>
               %endfor
               <tr>
-                  %if 'facebook' in h.allowed_login_types() and h.velruse.is_user_connected_to_facebook():
+                  %if 'facebook' in login_types and h.velruse.is_user_connected_to_facebook():
                   <td>Facebook</td>
                   <td><a href="${h.base_url('/velruse/revoke', query_params={'id': h.velruse.facebook_account().id})}&amp;${h.url_token()}">${_("remove")}</a></td>
                   %endif

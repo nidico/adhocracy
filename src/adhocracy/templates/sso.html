@@ -1,5 +1,5 @@
 <%def name="form(scenario='login')">
-<% login_types = h.allowed_login_types() %>
+<% login_types = h.config.get_list('adhocracy.login_type') %>
 
 %if 'openid' in login_types or 'facebook' in login_types:
 <div class="sso_form">

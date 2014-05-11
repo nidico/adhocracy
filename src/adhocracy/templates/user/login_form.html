@@ -1,7 +1,7 @@
 <%namespace name="components" file="/components.html"/>
 <%namespace name="sso" file="/sso.html"/>
 <%
-login_types = h.allowed_login_types()
+login_types = h.config.get_list('adhocracy.login_type')
 if 'username+password' in login_types and 'email+password' in login_types:
     field_title = _('Email or username:')
     field_type = 'text'

@@ -22,7 +22,6 @@ from adhocracy.lib.base import BaseController
 from adhocracy.lib.openidstore import create_consumer
 from adhocracy.lib.templating import render
 import adhocracy.lib.mail as libmail
-from adhocracy.lib.auth.authentication import allowed_login_types
 from adhocracy.lib.templating import ret_abort
 
 log = logging.getLogger(__name__)
@@ -46,7 +45,7 @@ TRUSTED_PROVIDER_RES = [
 
 
 def openid_login_allowed():
-    return 'openid' in allowed_login_types()
+    return 'openid' in config.get_list('adhocracy.login_type')
 
 
 def is_trusted_provider(identity):
@@ -166,7 +165,7 @@ class OpenidauthController(BaseController):
 
     def connect(self):
         if (not openid_login_allowed()
-                and 'facebook' not in allowed_login_types()):
+                and 'facebook' not in config.get_list('adhocracy.login_type')):
             ret_abort(_("Connection not allowed, single sign-on has been "
                         "disabled on this installation"), code=403)
         require.user.edit(c.user)

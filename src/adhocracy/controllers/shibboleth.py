@@ -9,7 +9,6 @@ from adhocracy import config
 from adhocracy import forms
 from adhocracy.lib import helpers as h
 from adhocracy.lib.auth import login_user
-from adhocracy.lib.auth.authentication import allowed_login_types
 from adhocracy.lib.auth.csrf import check_csrf
 from adhocracy.lib.auth.shibboleth import get_attribute
 from adhocracy.lib.auth.shibboleth import USERBADGE_MAPPERS
@@ -47,7 +46,7 @@ class ShibbolethController(BaseController):
     """
 
     def request_auth(self):
-        if 'shibboleth' not in allowed_login_types():
+        if 'shibboleth' not in config.get_list('adhocracy.login_type'):
             ret_abort(_("Shibboleth authentication not enabled"), code=403)
 
         came_from = request.GET.get('came_from', '/')
@@ -77,7 +76,7 @@ class ShibbolethController(BaseController):
         If a user logs in into a deleted account, this account is undeleted
         on the fly.
         """
-        if 'shibboleth' not in allowed_login_types():
+        if 'shibboleth' not in config.get_list('adhocracy.login_type'):
             ret_abort(_("Shibboleth authentication not enabled"), code=403)
 
         persistent_id = self._get_persistent_id()

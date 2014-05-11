@@ -1,6 +1,6 @@
 <%namespace name="components" file="/components.html"/>
 <%
-login_types = h.allowed_login_types()
+login_types = h.config.get_list('adhocracy.login_type')
 if c.openid_scenario == 'login':
     signin_text = _('Sign in')
 elif c.openid_scenario == 'register':

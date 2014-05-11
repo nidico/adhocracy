@@ -3,7 +3,7 @@ import logging
 import adhocracy.model as model
 from adhocracy.config import get_bool as config_get_bool
 from adhocracy.config import get_json as config_get_json
-from adhocracy.lib.auth.authentication import allowed_login_types
+from adhocracy.config import get_list as config_get_list
 from adhocracy.lib.helpers.site_helper import get_domain_part
 
 from paste.deploy.converters import asbool
@@ -197,7 +197,7 @@ def setup_entities(config, initial_setup):
                 fb.hide_global_categories = True
                 fb.require_valid_email = False
 
-    if 'shibboleth' in allowed_login_types(config):
+    if 'shibboleth' in config_get_list('adhocracy.login_type', config=config):
         mappings = config_get_json("adhocracy.shibboleth.userbadge_mapping",
                                    config=config)
         for mapping in mappings:

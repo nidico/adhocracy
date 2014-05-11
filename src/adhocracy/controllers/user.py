@@ -53,7 +53,7 @@ log = logging.getLogger(__name__)
 def settings_menu(instance, current):
 
     show_login = (h.user.can_change_password(c.page_user) or
-                  'openid' in h.allowed_login_types())
+                  'openid' in config.get_list('adhocracy.login_type'))
     show_optional = bool(config.get('adhocracy.user.optional_attributes'))
 
     return Menu.create(instance, current, OrderedDict([
@@ -293,7 +293,7 @@ class UserController(BaseController):
         # api. This is done here and not with an redirect to the login
         # to omit the generic welcome message
         who_api = get_api(request.environ)
-        login_configuration = h.allowed_login_types()
+        login_configuration = config.get_list('adhocracy.login_type')
         if 'username+password' in login_configuration:
             login = user.user_name
         elif 'email+password' in login_configuration:
@@ -1100,7 +1100,7 @@ class UserController(BaseController):
                 # message.
                 redirect(h.user.post_login_url(c.user))
         else:
-            login_configuration = h.allowed_login_types()
+            login_configuration = config.get_list('adhocracy.login_type')
             error_message = _("Invalid login")
 
             if 'username+password' in login_configuration:
