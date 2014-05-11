@@ -338,9 +338,12 @@ piwik.id =
 # adhocracy.registration_support_email = ${parts.adhocracy['email.to']}
 
 # INSTALL: How can users login?
-# Available options are facebook, openid, username+password, email+password, shibboleth
+# Available options are local, openid, facebook, shibboleth
 # Note that shibboleth and facebook need additional configuration
-#adhocracy.login_type = openid,username+password,email+password
+#adhocracy.login_type = local,openid
+
+# INSTALL: Allowed local login types
+#adhocracy.login_type.local = username+password,email+password
 
 # Allow password change for shibboleth users (default: false)
 # adhocracy.allow_shibboleth_password_change = false

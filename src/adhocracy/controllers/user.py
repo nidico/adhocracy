@@ -293,10 +293,10 @@ class UserController(BaseController):
         # api. This is done here and not with an redirect to the login
         # to omit the generic welcome message
         who_api = get_api(request.environ)
-        login_configuration = config.get_list('adhocracy.login_type')
-        if 'username+password' in login_configuration:
+        local_login_types = config.get_list('adhocracy.login_type.local')
+        if 'username+password' in local_login_types:
             login = user.user_name
-        elif 'email+password' in login_configuration:
+        elif 'email+password' in local_login_types:
             login = self.form_result.get("email")
         else:
             raise Exception('We have no way of authenticating the newly'
@@ -1100,16 +1100,16 @@ class UserController(BaseController):
                 # message.
                 redirect(h.user.post_login_url(c.user))
         else:
-            login_configuration = config.get_list('adhocracy.login_type')
+            local_login_types = config.get_list('adhocracy.login_type.local')
             error_message = _("Invalid login")
 
-            if 'username+password' in login_configuration:
-                if 'email+password' in login_configuration:
+            if 'username+password' in local_login_types:
+                if 'email+password' in local_login_types:
                     error_message = _("Invalid email / user name or password")
                 else:
                     error_message = _("Invalid user name or password")
             else:
-                if 'email+password' in login_configuration:
+                if 'email+password' in local_login_types:
                     error_message = _("Invalid email or password")
 
             return self._render_loginform(errors={"login": error_message})

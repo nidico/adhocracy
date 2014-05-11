@@ -81,8 +81,12 @@ DEFAULTS = {
     # 'default' or 'alternate'
     'adhocracy.login_style': 'default',
 
-    # possible options: email+password, username+password, openid, facebook
-    'adhocracy.login_type': ['email+password', 'username+password', 'openid'],
+    # possible options: local, openid, facebook
+    'adhocracy.login_type': ['local', 'openid'],
+
+    # possible options: email+password, username+password
+    'adhocracy.login_type.local': ['email+password', 'username+password'],
+
     'adhocracy.milestone.allow_show_all_proposals': False,
     'adhocracy.monitor_browser_values': False,
     'adhocracy.monitor_comment_behavior': False,

@@ -31,10 +31,10 @@ class _EmailBaseSQLAlchemyPlugin(object):
     }
 
     def get_user(self, login):
-        login_configuration = config_get_list('adhocracy.login_type',
-                                              config=config)
-        allow_name = 'username+password' in login_configuration
-        allow_email = 'email+password' in login_configuration
+        local_login_types = config_get_list('adhocracy.login_type.local',
+                                            config=config)
+        allow_name = 'username+password' in local_login_types
+        allow_email = 'email+password' in local_login_types
 
         if allow_name:
             if allow_email:

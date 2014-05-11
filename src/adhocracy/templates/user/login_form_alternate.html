@@ -1,10 +1,10 @@
 <%namespace name="components" file="/components.html"/>
 <%
-login_titleandtype = h.config.get_list('adhocracy.login_type')
-if 'email+password' in login_titleandtype:
+local_login_types = h.config.get_list('adhocracy.login_type.local')
+if 'email+password' in login_login_config:
     field_question = _('What is your email address?')
     field_title = _('My email:')
-    if 'username+password' in login_titleandtype:
+    if 'username+password' in login_login_config:
         field_type = 'text'
     else:
         field_type = 'email'
@@ -38,7 +38,7 @@ else:
     <input type="submit" value="${_('Login')}" />
   </div>
 </form>
-%if 'openid' in login_titleandtype:
+%if 'openid' in h.config.get_list('adhocracy.login_type'):
     <%
     c.openid_scenario = "login"
     %>

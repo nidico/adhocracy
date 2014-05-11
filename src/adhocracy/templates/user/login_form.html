@@ -1,21 +1,21 @@
 <%namespace name="components" file="/components.html"/>
 <%namespace name="sso" file="/sso.html"/>
 <%
-login_types = h.config.get_list('adhocracy.login_type')
-if 'username+password' in login_types and 'email+password' in login_types:
+local_login_types = h.config.get_list('adhocracy.login_type.local')
+if 'username+password' in local_login_types and 'email+password' in local_login_types:
     field_title = _('Email or username:')
     field_type = 'text'
 else:
     field_title = _('Login:')
     field_type =  'text'
-    if 'email+password' in login_types and \
-            'username+password' not in login_types:
+    if 'email+password' in local_login_types and \
+            'username+password' not in login_login_config:
         field_title = _('Email:')
         field_type = 'email'
 %>
 
 <div class="form_wrapper">
-  %if 'shibboleth' in login_types:
+  %if 'shibboleth' in h.config.get_list('adhocracy.login_type'):
   <div>
     <a href="${h.get_redirect_url('shibboleth/request_auth')}" class="button ${components.add_patch_camefrom_class()}">${_(u"Login") if c.hide_locallogin else _(u"Login via Shibboleth")}</a>
   </div>
